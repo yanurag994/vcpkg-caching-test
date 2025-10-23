@@ -1,0 +1,39 @@
+name: Windows vcpkg CGAL Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        git checkout master
+        .\bootstrap-vcpkg.bat
+
+    - name: Install dependencies
+      run: |
+        .\vcpkg\vcpkg install cgal
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=..\vcpkg\vcpkg.cmake
+
+    - name: Build
+      run: |
+        cd build
+        cmake --build . --config Release
