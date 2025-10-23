@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}\vcpkg_cache
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ env.VCPKG_INSTALLATION_ROOT }}\vcpkg_cache
 
     steps:
     - name: Checkout code
