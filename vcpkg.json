@@ -1,6 +1,7 @@
 {
-  "version": 3,
-  "dependencies": {
-    "CGAL": {}
-  }
+  "name": "vcpkg-cgal-test",
+  "version-string": "0.1.0",
+  "dependencies": [
+    "cgal"
+  ]
 }
