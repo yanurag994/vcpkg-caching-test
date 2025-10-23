@@ -16,4 +16,4 @@ jobs:
 
     - name: Install dependencies (manifest mode)
       run: |
-        vcpkg install
+        vcpkg install --triplet x64-windows
