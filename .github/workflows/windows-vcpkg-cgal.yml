@@ -10,10 +10,21 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      VCPKG_DEFAULT_BINARY_CACHE: ${{env.VCPKG_ROOT}}\vcpkg\buildtrees;${{env.VCPKG_ROOT}}\vcpkg\packages
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up cache for vcpkg
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+        key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+        restore-keys: |
+          vcpkg-${{ runner.os }}-
+
     - name: Install dependencies (manifest mode)
       run: |
-        vcpkg install --triplet x64-windows
+        vcpkg install --triplet x64-windows --binarysource=clear --binarysource=files,${{ env.VCPKG_DEFAULT_BINARY_CACHE }},readwrite
