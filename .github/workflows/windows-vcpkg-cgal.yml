@@ -16,7 +16,5 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies (manifest mode)
-      shell: pwsh
       run: |
-        # Runs in repo root where vcpkg.json lives; manifest mode will be used.
-        vcpkg.exe install --triplet x64-windows
+        vcpkg install
