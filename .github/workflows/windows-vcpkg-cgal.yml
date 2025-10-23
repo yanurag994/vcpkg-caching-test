@@ -1,12 +1,11 @@
+// ...existing code...
 name: Windows vcpkg CGAL Build
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -14,26 +13,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Set up vcpkg
+    - name: Install dependencies (manifest mode)
+      shell: pwsh
       run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        cd vcpkg
-        git checkout master
-        .\bootstrap-vcpkg.bat
-
-    - name: Install dependencies
-      run: |
-        .\vcpkg\vcpkg install
-
-    - name: Configure CMake
-      run: |
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=..\vcpkg\vcpkg.cmake
-
-    - name: Build
-      run: |
-        cd build
-        cmake --build . --config Release
+        # Runs in repo root where vcpkg.json lives; manifest mode will be used.
+        vcpkg.exe install --triplet x64-windows
