@@ -26,6 +26,10 @@ jobs:
         restore-keys: |
           vcpkg-${{ runner.os }}-
 
+    - name: Install dependencies (manifest mode)
+      run: |
+        vcpkg install --triplet x64-windows --debug --clean-after-build --binarysource="clear;files,${{ env.VCPKG_DEFAULT_BINARY_CACHE }},readwrite"
+
     - name: Configure CMake
       run: |
         cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_INSTALLATION_ROOT }}\scripts\buildsystems\vcpkg.cmake"
