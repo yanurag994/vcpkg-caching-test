@@ -12,6 +12,7 @@ jobs:
 
     env:
       VCPKG_INSTALLATION_ROOT: C:\vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: C:\vcpkg\vcpkg_cache
 
     steps:
     - name: Checkout code
@@ -20,16 +21,14 @@ jobs:
     - name: Cache vcpkg binaries
       uses: actions/cache@v3
       with:
-        path: ${{ env.VCPKG_INSTALLATION_ROOT }}\vcpkg_cache
+        path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
         key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
         restore-keys: |
           vcpkg-${{ runner.os }}-
 
-    - name: Install dependencies (manifest mode)
+    - name: Configure CMake
       run: |
-        vcpkg install --triplet x64-windows --binarysource="clear;files,${{ env.VCPKG_INSTALLATION_ROOT }}\vcpkg_cache,readwrite"
+        cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_INSTALLATION_ROOT }}\scripts\buildsystems\vcpkg.cmake"
 
     - name: Build project
-      run: |
-        cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_INSTALLATION_ROOT }}\scripts\buildsystems\vcpkg.cmake
-        cmake --build build --config Release
+      run: cmake --build build --config Release
