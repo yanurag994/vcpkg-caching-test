@@ -29,3 +29,7 @@ jobs:
       run: |
         vcpkg install --triplet x64-windows --binarysource="clear;files,${{ env.VCPKG_INSTALLATION_ROOT }}\vcpkg_cache,readwrite"
 
+    - name: Build project
+      run: |
+        cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_INSTALLATION_ROOT }}\scripts\buildsystems\vcpkg.cmake
+        cmake --build build --config Release
