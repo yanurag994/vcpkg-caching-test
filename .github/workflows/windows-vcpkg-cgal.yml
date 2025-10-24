@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies (manifest mode)
       run: |
-        vcpkg install --triplet x64-windows --debug --clean-after-build --binarysource="clear;files,${{ env.VCPKG_DEFAULT_BINARY_CACHE }},readwrite"
+        vcpkg install --triplet x64-windows --clean-after-build --binarysource="clear;files,${{ env.VCPKG_DEFAULT_BINARY_CACHE }},readwrite"
 
     - name: Configure CMake
       run: |
